@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">StoryBook</string>
+    <string name="domain">http://10.0.2.2/StoriesAndMusic_AdminSite/</string>
+</resources>
