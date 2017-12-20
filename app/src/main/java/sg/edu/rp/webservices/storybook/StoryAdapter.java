@@ -8,14 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
-import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by 15035648 on 13/12/2017.
@@ -54,26 +49,24 @@ class StoryAdapter extends BaseAdapter {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-
+            grid = new View(context);
             grid = inflater.inflate(R.layout.grid_single, null);
-            TextView textView = grid.findViewById(R.id.grid_text);
-            final ImageView imageView = grid.findViewById(R.id.grid_image);
-            Picasso.with(context).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + storyArr.get(position).getImage_path()).centerCrop().error(R.drawable.no_image).fit().centerCrop().into(imageView);
+        } else {
+            grid = (View)convertView;
+        }
+        TextView textView = grid.findViewById(R.id.grid_text);
+        final ImageView imageView = grid.findViewById(R.id.grid_image);
+        Picasso.with(context).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + storyArr.get(position).getImage_path()).centerCrop().error(R.drawable.no_image).fit().centerCrop().into(imageView);
 //            .resize(400, 750)
 
-            String storyName = storyArr.get(position).getStoryName();
-            if (storyName.length() > 20) {
-                String newStoryName = storyName.substring(0, 17);
-                textView.setText(newStoryName + "...");
-
-            } else {
-                textView.setText(storyName);
-            }
+        String storyName = storyArr.get(position).getStoryName();
+        if (storyName.length() > 20) {
+            String newStoryName = storyName.substring(0, 17)+"...";
+            textView.setText(newStoryName);
 
         } else {
-            grid = convertView;
+            textView.setText(storyName);
         }
-
         return grid;
     }
 }

@@ -35,7 +35,7 @@ import cz.msebera.android.httpclient.Header;
 public class listOfPages extends AppCompatActivity {
     ListView lvPages;
     SwipeRefreshLayout refreshPageList;
-    ArrayList<Page> pageArr = new ArrayList<Page>();
+    ArrayList<Page> pageArr = new ArrayList<>();
     int chapter_id;
     int chapter_num;
     String chapter_name;
@@ -66,7 +66,7 @@ public class listOfPages extends AppCompatActivity {
         getPages();
 
         ActionBar ab = getSupportActionBar();
-        ab.setTitle("");
+        ab.setTitle(" ");
         ab.setDisplayHomeAsUpEnabled(true);
         refreshPageList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -92,10 +92,9 @@ public class listOfPages extends AppCompatActivity {
                         public void onSuccess(int statusCode, Header[] headers, String res) {
                             // called when response HTTP status is "200 OK"
                             Log.e("Results GetPages()", res);
-                            JSONArray jsonArray = null;
                             pageArr.clear();
                             try {
-                                jsonArray = new JSONArray(res);
+                                JSONArray jsonArray = new JSONArray(res);
                                 if (jsonArray.length() == 0) {
                                     Toast.makeText(listOfPages.this, "No pages are written yet for this chapter", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -133,12 +132,12 @@ public class listOfPages extends AppCompatActivity {
     }
 
     private void populatePageList(final ArrayList<Page> page) {
-        final ArrayList<String> arrPage = new ArrayList<String>();
+        final ArrayList<String> arrPage = new ArrayList<>();
         for (int i = 0; i < page.size(); i++) {
             arrPage.add("Page " + page.get(i).getPage_num());
         }
         Collections.sort(arrPage.subList(0, arrPage.size()));
-        ArrayAdapter<String> aaPages = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrPage);
+        ArrayAdapter<String> aaPages = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrPage);
         lvPages.setAdapter(aaPages);
         aaPages.notifyDataSetChanged();
         refreshPageList.setRefreshing(false);

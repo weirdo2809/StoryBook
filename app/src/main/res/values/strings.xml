@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">StoryBook</string>
     <string name="domain">http://10.0.2.2/StoriesAndMusic_AdminSite/</string>
+    <string name="no_data_was_retrieved">No data was retrieved</string>
 </resources>

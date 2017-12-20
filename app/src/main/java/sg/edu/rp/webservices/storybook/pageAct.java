@@ -113,7 +113,7 @@ public class pageAct extends AppCompatActivity {
             }
         } else {
             try {
-                if (url != "") {
+                if (!url.equals("") ) {
                     mediaplayer = new MediaPlayer();
                     mediaplayer.setLooping(true);
                     mediaplayer.setDataSource(url); // setup song from https://www.hrupin.com/wp-content/uploads/mp3/testsong_20_sec.mp3 URL to mediaplayer data source
@@ -199,9 +199,8 @@ public class pageAct extends AppCompatActivity {
                     public void onSuccess(int statusCode, Header[] headers, String res) {
                         // called when response HTTP status is "200 OK"
                         Log.e("Results GetPage()", res);
-                        JSONArray jsonArray = null;
                         try {
-                            jsonArray = new JSONArray(res);
+                            JSONArray jsonArray = new JSONArray(res);
                             if (jsonArray.length() == 0) {
                                 Toast.makeText(pageAct.this, "This page does not exist", Toast.LENGTH_SHORT).show();
                                 refreshPage.setRefreshing(false);

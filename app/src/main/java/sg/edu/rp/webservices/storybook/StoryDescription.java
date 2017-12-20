@@ -85,9 +85,9 @@ public class StoryDescription extends AppCompatActivity {
                         public void onSuccess(int statusCode, Header[] headers, String res) {
                             // called when response HTTP status is "200 OK"
                             Log.e("Results GetStory()", res);
-                            JSONArray jsonArray = null;
+
                             try {
-                                jsonArray = new JSONArray(res);
+                                JSONArray jsonArray = new JSONArray(res);
                                 if (jsonArray.length() == 0) {
                                     Toast.makeText(StoryDescription.this, "No story retrieved with ID: " + storyID, Toast.LENGTH_SHORT).show();
                                 }
@@ -98,8 +98,8 @@ public class StoryDescription extends AppCompatActivity {
                                     Story story = new Story(jObj.getString("name"), Integer.parseInt(jObj.getString("story_id")), jObj.getString("description"), jObj.getString("image_path"));
                                     tvDesc.setText(story.getStoryDesc());
                                     ab.setTitle(story.getStoryName());
-                                    Picasso.with(StoryDescription.this).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + story.getImage_path()).error(R.drawable.no_image).resize(400, 750).into(ivThumbnail);
-
+                                    Picasso.with(StoryDescription.this).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + story.getImage_path()).error(R.drawable.no_image).fit().into(ivThumbnail);
+//.resize(400, 750)
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -129,10 +129,9 @@ public class StoryDescription extends AppCompatActivity {
                         public void onSuccess(int statusCode, Header[] headers, String res) {
                             // called when response HTTP status is "200 OK"
                             Log.e("Results GetChapters()", res);
-                            JSONArray jsonArray = null;
                             chapterArr.clear();
                             try {
-                                jsonArray = new JSONArray(res);
+                                JSONArray jsonArray = new JSONArray(res);
                                 if (jsonArray.length() == 0) {
                                     Toast.makeText(StoryDescription.this, "There are no chapters for this story currently", Toast.LENGTH_SHORT).show();
                                 }
@@ -183,14 +182,14 @@ public class StoryDescription extends AppCompatActivity {
     }
 
     private void populateListView(ArrayList<Chapter> chapter) {
-        ArrayList<String> arrChapter = new ArrayList<String>();
+        ArrayList<String> arrChapter = new ArrayList<>();
         for (int i = 0; i < chapter.size(); i++) {
             int chapterNum = chapter.get(i).getChapter_num();
             String chapterName = chapter.get(i).getName();
             String chapterRow = chapterNum + ": " + chapterName;
             arrChapter.add(chapterRow);
         }
-        ArrayAdapter<String> aaChapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrChapter);
+        ArrayAdapter<String> aaChapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrChapter);
         lvChapters.setAdapter(aaChapter);
         aaChapter.notifyDataSetChanged();
         refreshChaptersList.setRefreshing(false);

@@ -94,7 +94,7 @@ public class viewPager extends AppCompatActivity {
     }
 
     public void prepareSong(final String url) {
-        if (url != "") {
+        if (!url.equals("") ) {
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
             client.get(url, params, new TextHttpResponseHandler() {
@@ -158,31 +158,26 @@ public class viewPager extends AppCompatActivity {
                     public void onSuccess(int statusCode, Header[] headers, String res) {
                         // called when response HTTP status is "200 OK"
                         Log.e("Results GetPages()", res);
-                        JSONArray jsonArray = null;
                         if (pageArr != null) {
                             pageArr.clear();
                         }
 
                         try {
-                            jsonArray = new JSONArray(res);
-                            if (jsonArray.length() == 0) {
-
-                            } else {
-
+                            JSONArray jsonArray = new JSONArray(res);
+                            if (jsonArray.length() !=0) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jObj = jsonArray.getJSONObject(i);
+                                    Log.e("Story ID", jObj.getString("story_id"));
+                                    Log.e("Chapter ID", jObj.getString("chapter_id"));
+                                    Log.e("Page ID", jObj.getString("page_id"));
+                                    Log.e("Page Number", jObj.getString("page_num"));
+                                    Log.e("Page Text", jObj.getString("story_text"));
+                                    Log.e("File Path", jObj.getString("file_path"));
+                                    Page page = new Page(Integer.parseInt(jObj.getString("story_id")), Integer.parseInt(jObj.getString("chapter_id")), Integer.parseInt(jObj.getString("page_id")), Integer.parseInt(jObj.getString("page_num")), jObj.getString("story_text"), jObj.getString("file_path"));
+                                    pageArr.add(page);
+                                }
+                                populateViewPager(pageArr);
                             }
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jObj = jsonArray.getJSONObject(i);
-                                Log.e("Story ID", jObj.getString("story_id"));
-                                Log.e("Chapter ID", jObj.getString("chapter_id"));
-                                Log.e("Page ID", jObj.getString("page_id"));
-                                Log.e("Page Number", jObj.getString("page_num"));
-                                Log.e("Page Text", jObj.getString("story_text"));
-                                Log.e("File Path", jObj.getString("file_path"));
-                                Page page = new Page(Integer.parseInt(jObj.getString("story_id")), Integer.parseInt(jObj.getString("chapter_id")), Integer.parseInt(jObj.getString("page_id")), Integer.parseInt(jObj.getString("page_num")), jObj.getString("story_text"), jObj.getString("file_path"));
-                                pageArr.add(page);
-                            }
-                            populateViewPager(pageArr);
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
