@@ -22,9 +22,9 @@ import cz.msebera.android.httpclient.Header;
  */
 
 class StoryAdapter extends BaseAdapter {
-    Context context;
-    protected ArrayList<Story> storyArr;
-    LayoutInflater inflater;
+    private Context context;
+    private ArrayList<Story> storyArr;
+    private LayoutInflater inflater;
 
     public StoryAdapter(Context context, ArrayList<Story> storyArr) {
         this.storyArr = storyArr;
@@ -55,11 +55,12 @@ class StoryAdapter extends BaseAdapter {
 
         if (convertView == null) {
 
-            grid = new View(context);
             grid = inflater.inflate(R.layout.grid_single, null);
-            TextView textView = (TextView) grid.findViewById(R.id.grid_text);
-            final ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
-            Picasso.with(context).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + storyArr.get(position).getImage_path()).error(R.drawable.no_image).resize(400, 650).into(imageView);
+            TextView textView = grid.findViewById(R.id.grid_text);
+            final ImageView imageView = grid.findViewById(R.id.grid_image);
+            Picasso.with(context).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + storyArr.get(position).getImage_path()).centerCrop().error(R.drawable.no_image).fit().centerCrop().into(imageView);
+//            .resize(400, 750)
+
             String storyName = storyArr.get(position).getStoryName();
             if (storyName.length() > 20) {
                 String newStoryName = storyName.substring(0, 17);
@@ -70,7 +71,7 @@ class StoryAdapter extends BaseAdapter {
             }
 
         } else {
-            grid = (View) convertView;
+            grid = convertView;
         }
 
         return grid;
