@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    >
 
-    <ImageView
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/linearLayout">
+
+        <ImageView
         android:id="@+id/grid_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,3 +27,15 @@
         android:textSize="18sp"
         android:textStyle="bold|italic" />
 </LinearLayout>
+
+<!--    <TextView
+        android:id="@+id/tvNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_dark"
+        android:text="NEW!"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="12sp" />
+        -->
+
+</FrameLayout>

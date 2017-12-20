@@ -16,19 +16,24 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".StoryDescription"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".listOfPages"
-            android:parentActivityName=".StoryDescription"
-            android:launchMode="standard"/>
-        <activity android:name=".pageAct"
-            android:parentActivityName=".listOfPages"
+        <activity
+            android:name=".listOfPages"
             android:launchMode="standard"
-            />
+            android:parentActivityName=".StoryDescription" />
+        <activity
+            android:name=".pageAct"
+            android:launchMode="standard"
+            android:parentActivityName=".listOfPages" />
+        <activity
+            android:name=".viewPager"
+            android:launchMode="standard"
+            android:parentActivityName=".listOfPages"></activity>
     </application>
 
 </manifest>

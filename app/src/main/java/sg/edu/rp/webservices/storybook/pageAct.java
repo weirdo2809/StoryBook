@@ -36,7 +36,8 @@ public class pageAct extends AppCompatActivity {
     ActionBar ab;
     int pageNumb;
     String storyText;
-int numRows;
+    int numRows;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,7 @@ int numRows;
         ab.setTitle("Page Number: " + pageNumb);
         Toast.makeText(this, "Page Number: " + selectedPage.getPage_num(), Toast.LENGTH_SHORT).show();
 
-        url =getResources().getString(R.string.domain) + selectedPage.getFile_path();
+        url = getResources().getString(R.string.domain) + selectedPage.getFile_path();
         playSong(url);
 
 
@@ -155,10 +156,6 @@ int numRows;
                 playSong(url);
             }
 
-        } else if (id == R.id.pageOne) {
-            pageNumb = 1;
-            getPage(pageNumb, selectedPage.getChapter_id());
-            getNumOfPages(selectedPage.getChapter_id());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -168,19 +165,19 @@ int numRows;
         RequestParams params = new RequestParams();
 
         //http://localhost/StoriesAndMusic_AdminSite/getPages.php?page_num=3&chapter_id=32
-        client.get(getResources().getString(R.string.domain)+"getNumberOfPages.php?chapter_id=" + chapterNum, params, new TextHttpResponseHandler() {
+        client.get(getResources().getString(R.string.domain) + "getNumberOfPages.php?chapter_id=" + chapterNum, params, new TextHttpResponseHandler() {
 
-            @Override
+                    @Override
                     public void onSuccess(int statusCode, Header[] headers, String res) {
                         numRows = Integer.parseInt(res);
-                if (pageNumb <= 1) {
-                    btnPrev.setVisibility(View.INVISIBLE);
-                } else if(pageNumb<numRows){
-                    btnPrev.setVisibility(View.VISIBLE);
-                    btnNext.setVisibility(View.VISIBLE);
-                }else{
-                    btnNext.setVisibility(View.INVISIBLE);
-                }
+                        if (pageNumb <= 1) {
+                            btnPrev.setVisibility(View.INVISIBLE);
+                        } else if (pageNumb < numRows) {
+                            btnPrev.setVisibility(View.VISIBLE);
+                            btnNext.setVisibility(View.VISIBLE);
+                        } else {
+                            btnNext.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     @Override
@@ -197,7 +194,7 @@ int numRows;
         refreshPage.setRefreshing(true);
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        client.get(getResources().getString(R.string.domain)+"getPages.php?page_num=" + pageNum + "&chapter_id=" + chapterNum, params, new TextHttpResponseHandler() {
+        client.get(getResources().getString(R.string.domain) + "getPages.php?page_num=" + pageNum + "&chapter_id=" + chapterNum, params, new TextHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String res) {
                         // called when response HTTP status is "200 OK"

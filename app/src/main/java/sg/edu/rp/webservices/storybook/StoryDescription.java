@@ -34,18 +34,17 @@ import cz.msebera.android.httpclient.Header;
 
 public class StoryDescription extends AppCompatActivity {
     int storyID;
-    TextView tvTitle, tvDesc;
+    TextView tvDesc;
     ImageView ivThumbnail;
     ArrayList<Chapter> chapterArr = new ArrayList<>();
     ActionBar ab;
     ListView lvChapters;
-    SwipeRefreshLayout refreshChaptersList ;
+    SwipeRefreshLayout refreshChaptersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_description);
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvDesc = (TextView) findViewById(R.id.tvDesc);
         ivThumbnail = (ImageView) findViewById(R.id.ivThumbnail);
         lvChapters = (ListView) findViewById(R.id.lvChapters);
@@ -53,11 +52,9 @@ public class StoryDescription extends AppCompatActivity {
 
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Story Description");
-
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        int stryID = pref.getInt("story_id",999999);
+        int stryID = pref.getInt("story_id", 999999);
         Intent i = getIntent();
         storyID = i.getIntExtra("story_id", stryID);
 
@@ -80,10 +77,10 @@ public class StoryDescription extends AppCompatActivity {
     }
 
     private void retrievestory() {
-        if(checkConnected()){
+        if (checkConnected()) {
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            client.get(getResources().getString(R.string.domain)+"getStories.php?story_id=" + storyID, params, new TextHttpResponseHandler() {
+            client.get(getResources().getString(R.string.domain) + "getStories.php?story_id=" + storyID, params, new TextHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, String res) {
                             // called when response HTTP status is "200 OK"
@@ -91,18 +88,18 @@ public class StoryDescription extends AppCompatActivity {
                             JSONArray jsonArray = null;
                             try {
                                 jsonArray = new JSONArray(res);
-                                if(jsonArray.length()==0){
-                                    Toast.makeText(StoryDescription.this, "No story retrieved with ID: "+storyID, Toast.LENGTH_SHORT).show();
+                                if (jsonArray.length() == 0) {
+                                    Toast.makeText(StoryDescription.this, "No story retrieved with ID: " + storyID, Toast.LENGTH_SHORT).show();
                                 }
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jObj = jsonArray.getJSONObject(i);
                                     Log.e("story ID", jObj.getString("story_id"));
                                     Log.e("story name", jObj.getString("name"));
-                                    Story story = new Story(jObj.getString("name"), Integer.parseInt(jObj.getString("story_id")), jObj.getString("description"),jObj.getString("image_path"));
-                                    tvTitle.setText(story.getStoryName());
+                                    Story story = new Story(jObj.getString("name"), Integer.parseInt(jObj.getString("story_id")), jObj.getString("description"), jObj.getString("image_path"));
                                     tvDesc.setText(story.getStoryDesc());
                                     ab.setTitle(story.getStoryName());
-                                    Picasso.with(StoryDescription.this).load("http://10.0.2.2/StoriesAndMusic_AdminSite/"+story.getImage_path()).resize(400,750).into(ivThumbnail);
+                                    Picasso.with(StoryDescription.this).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + story.getImage_path()).error(R.drawable.no_image).resize(400, 750).into(ivThumbnail);
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -116,18 +113,18 @@ public class StoryDescription extends AppCompatActivity {
                         }
                     }
             );
-        }else{
+        } else {
             Toast.makeText(this, "Check your connection", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void retrieveChapters() {
-        if(checkConnected()){
+        if (checkConnected()) {
             refreshChaptersList.setRefreshing(true);
             AsyncHttpClient client = new AsyncHttpClient();
             RequestParams params = new RequestParams();
-            client.get(getResources().getString(R.string.domain)+"getChapters.php?story_id=" + storyID, params, new TextHttpResponseHandler() {
+            client.get(getResources().getString(R.string.domain) + "getChapters.php?story_id=" + storyID, params, new TextHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, String res) {
                             // called when response HTTP status is "200 OK"
@@ -136,7 +133,7 @@ public class StoryDescription extends AppCompatActivity {
                             chapterArr.clear();
                             try {
                                 jsonArray = new JSONArray(res);
-                                if(jsonArray.length()==0){
+                                if (jsonArray.length() == 0) {
                                     Toast.makeText(StoryDescription.this, "There are no chapters for this story currently", Toast.LENGTH_SHORT).show();
                                 }
                                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -163,7 +160,7 @@ public class StoryDescription extends AppCompatActivity {
                         }
                     }
             );
-        }else{
+        } else {
             refreshChaptersList.setRefreshing(false);
 
         }
@@ -201,18 +198,19 @@ public class StoryDescription extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(StoryDescription.this, listOfPages.class);
-                intent.putExtra("chapter_id",chapterArr.get(i).getChapter_id());
-                intent.putExtra("chapter_name",chapterArr.get(i).getName());
-                intent.putExtra("chapter_num",chapterArr.get(i).getChapter_num());
+                intent.putExtra("chapter_id", chapterArr.get(i).getChapter_id());
+                intent.putExtra("chapter_name", chapterArr.get(i).getName());
+                intent.putExtra("chapter_num", chapterArr.get(i).getChapter_num());
 
                 SavePreferences("story_id", chapterArr.get(i).getStory_id(), "Integer");
-                SavePreferences("chapter_id",chapterArr.get(i).getChapter_id(),"Integer");
-                SavePreferences("chapter_name",chapterArr.get(i).getName(),"String");
-                SavePreferences("chapter_num",chapterArr.get(i).getChapter_num(),"Integer");
+                SavePreferences("chapter_id", chapterArr.get(i).getChapter_id(), "Integer");
+                SavePreferences("chapter_name", chapterArr.get(i).getName(), "String");
+                SavePreferences("chapter_num", chapterArr.get(i).getChapter_num(), "Integer");
                 startActivity(intent);
             }
         });
     }
+
     public Boolean checkConnected() {
         ConnectivityManager conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
@@ -223,5 +221,7 @@ public class StoryDescription extends AppCompatActivity {
             return false;
         }
     }
+
+
 }
 

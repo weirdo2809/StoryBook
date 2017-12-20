@@ -49,16 +49,16 @@ public class listOfPages extends AppCompatActivity {
         refreshPageList = (SwipeRefreshLayout) findViewById(R.id.refreshPageList);
         tvChapterName = (TextView) findViewById(R.id.tvChapterName);
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        int chpID = pref.getInt("chapter_id",999999);
-        int chpNum = pref.getInt("chapter_num",999999);
-        String chpName = pref.getString("chapter_name","null");
+        int chpID = pref.getInt("chapter_id", 999999);
+        int chpNum = pref.getInt("chapter_num", 999999);
+        String chpName = pref.getString("chapter_name", "null");
 
         Intent i = getIntent();
         chapter_id = i.getIntExtra("chapter_id", chpID);
         chapter_name = i.getStringExtra("chapter_name");
-        chapter_num = i.getIntExtra("chapter_num",chpNum);
-        if(chapter_name==null){
-            chapter_name=chpName;
+        chapter_num = i.getIntExtra("chapter_num", chpNum);
+        if (chapter_name == null) {
+            chapter_name = chpName;
         }
 
         tvChapterName.setText("Chapter " + chapter_num + ": " + chapter_name);
@@ -66,7 +66,7 @@ public class listOfPages extends AppCompatActivity {
         getPages();
 
         ActionBar ab = getSupportActionBar();
-        ab.setTitle("List of pages");
+        ab.setTitle("");
         ab.setDisplayHomeAsUpEnabled(true);
         refreshPageList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -74,8 +74,6 @@ public class listOfPages extends AppCompatActivity {
                 getPages();
             }
         });
-
-
     }
 
     @Override
@@ -147,16 +145,10 @@ public class listOfPages extends AppCompatActivity {
         lvPages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(listOfPages.this, pageAct.class);
-                for (int k = 0; k < arrPage.size(); k++) {
-                    if (page.get(k).getPage_num() == i + 1) {
-                        intent.putExtra("selectedPage", page.get(k));
-                        startActivity(intent);
-                        break;
-                    }
-                }
-
-
+                Intent intent = new Intent(listOfPages.this, viewPager.class);
+                intent.putExtra("selectedPage", page.get(i));
+                intent.putExtra("position", i);
+                startActivity(intent);
             }
         });
     }

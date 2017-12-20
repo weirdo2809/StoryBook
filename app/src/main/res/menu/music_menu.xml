@@ -7,9 +7,5 @@
         android:icon="@drawable/pause"
         app:showAsAction="always"
         />
-    <item
-        android:id="@+id/pageOne"
-        android:title="Go to first page"
-        app:showAsAction="never"
-        />
+
 </menu>

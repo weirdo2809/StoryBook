@@ -8,9 +8,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by 15035648 on 13/12/2017.
@@ -53,14 +58,14 @@ class StoryAdapter extends BaseAdapter {
             grid = new View(context);
             grid = inflater.inflate(R.layout.grid_single, null);
             TextView textView = (TextView) grid.findViewById(R.id.grid_text);
-            ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
-            Picasso.with(context).load("http://10.0.2.2/StoriesAndMusic_AdminSite/"+storyArr.get(position).getImage_path()).resize(400,650).into(imageView);
+            final ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
+            Picasso.with(context).load("http://10.0.2.2/StoriesAndMusic_AdminSite/" + storyArr.get(position).getImage_path()).error(R.drawable.no_image).resize(400, 650).into(imageView);
             String storyName = storyArr.get(position).getStoryName();
-            if(storyName.length()> 20){
-              String newStoryName =  storyName.substring(0,17);
-                textView.setText(newStoryName+"...");
+            if (storyName.length() > 20) {
+                String newStoryName = storyName.substring(0, 17);
+                textView.setText(newStoryName + "...");
 
-            }else{
+            } else {
                 textView.setText(storyName);
             }
 
